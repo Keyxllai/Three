@@ -22,18 +22,27 @@
     <script>
         // Our Javascript will go here.
         var scene = new THREE.Scene();
-        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        var renderer = new THREE.WebGLRenderer();
+        var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 2000);
+        var renderer = new THREE.WebGLRenderer();   // this can take advantage of the GPU
 
         renderer.setSize(window.innerWidth, window.innerHeight, true);
-        document.body.appendChild(renderer.domElement);
+        document.body.appendChild(renderer.domElement); // threejs will create a canvaa inside the body elemnt that will be used to render our scene
 
-        var geometry = new THREE.BoxGeometry(2, 1, 1);
-        var material = new THREE.MeshBasicMaterial({ color: 0xFF00ff });
+        var geometry = new THREE.BoxGeometry(5, 5, 5);
+        var material = new THREE.MeshLambertMaterial({ color: 0xFF0000 });
         var cube = new THREE.Mesh(geometry, material);
         scene.add(cube);
 
-        camera.position.z = 5;
+        var light = new THREE.PointLight(0xFFFF00);
+        light.position.set(10, 0, 10);
+        scene.add(light);
+
+        //camera.position.z = 5;
+        camera.position.set(15, 10, 20);
+        camera.lookAt(scene.position);
+
+         renderer.setClearColor( 0xdddddd, 1);   //设置背景色为grey
+        //renderer.setClearColorHex(0x333F47, 1);
 
         var render = function () {
             requestAnimationFrame(render);
@@ -41,7 +50,6 @@
             cube.rotation.x += 0.01;
             cube.rotation.y += 0.01;
             cube.rotation.z += 0.01;
-            //cube.translations.x += 0.1;
 
             renderer.render(scene, camera);
         };
