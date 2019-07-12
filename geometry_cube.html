@@ -36,6 +36,8 @@
             scene.add(mesh);
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.shadowMap.enabled = true;
+            renderer.setClearColor( 0xdddddd, 1);   //设置背景色为grey
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 

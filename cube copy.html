@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8>
+    <title>My first three.js app</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* canvas {
+            width: 100%;
+            height: 100%
+        } */
+    </style>
+</head>
+
+<body>
+    <script src="js/three.js"></script>
+    <script>
+        // Our Javascript will go here.
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 2000);
+        var renderer = new THREE.WebGLRenderer();   // this can take advantage of the GPU
+
+        renderer.setSize(window.innerWidth, window.innerHeight, true);
+        document.body.appendChild(renderer.domElement); // threejs will create a canvas inside the body elemnt that will be used to render our scene
+
+        var geometry = new THREE.BoxGeometry(5, 5, 5);
+        var material = new THREE.MeshBasicMaterial({ color: 0x7777ff });//对光照无感，给几何体一种简单的颜色或显示线框
+        material.wireframe = true;  //如果为true，则将材质渲染成线框，在调试的时候可以起到很好的作用
+        var cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        // var 
+        var cubegeometry = new THREE.BoxGeometry(5, 5, 5);
+        var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x7777ff })//这种材质对光照有反应，用于创建暗淡的不发光的物体
+
+        var timer = 0.0001 * Date.now();
+       // cubeMaterial.emissive.setHSL(0.04, 1, 0.35 * (0.5 + 0.5 * Math.cos(35 * timer)));//emissive:设置材质发射的颜色，不是一种光源，而是一种不受光照影响的颜色。默认为黑色
+        var cube1 = new THREE.Mesh(cubegeometry, cubeMaterial);
+        cube1.position.set(10, 0, 0);
+        scene.add(cube1);
+
+        var cubegeometry2 = new THREE.BoxGeometry(5, 5, 5);
+        var cubeMaterial2 = new THREE.MeshPhongMaterial({
+            color: 0x7777ff,
+            specular: 0x7777ff,
+            shininess: 130
+        }) //这种材质对光照也有反应，用于创建金属类明亮的物体
+        var cube2 = new THREE.Mesh(cubegeometry2, cubeMaterial2);
+        cube2.position.set(-10, 0, 0);
+        scene.add(cube2);
+
+
+        var light = new THREE.PointLight(0xFFFF00);
+        light.position.set(10, 0, 10);
+        scene.add(light);
+
+        //camera.position.z = 5;
+        camera.position.set(15, 10, 20);
+        camera.lookAt(scene.position);
+
+        renderer.setClearColor(0xdddddd, 1);   //设置背景色为grey
+
+        var render = function () {
+            requestAnimationFrame(render);
+
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+            cube.rotation.z += 0.01;
+
+            cube1.rotation.x += 0.01;
+            cube1.rotation.y += 0.01;
+            cube1.rotation.z += 0.01;
+
+            cube2.rotation.x += 0.01;
+            cube2.rotation.y += 0.01;
+            cube2.rotation.z += 0.01;
+
+            renderer.render(scene, camera);
+        };
+
+        render();
+    </script>
+</body>
+
+</html>
