@@ -26,7 +26,7 @@
         var renderer = new THREE.WebGLRenderer();   // this can take advantage of the GPU
 
         renderer.setSize(window.innerWidth, window.innerHeight, true);
-        document.body.appendChild(renderer.domElement); // threejs will create a canvaa inside the body elemnt that will be used to render our scene
+        document.body.appendChild(renderer.domElement); // threejs will create a canvas inside the body elemnt that will be used to render our scene
 
         var geometry = new THREE.BoxGeometry(5, 5, 5);
         var material = new THREE.MeshLambertMaterial({ color: 0xFF0000 });
