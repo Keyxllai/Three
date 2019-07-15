@@ -63,6 +63,7 @@
 
             scene.add(new THREE.HemisphereLight(0x443333, 0x222233, 4));
 
+            //[left,right,up,down,back,front]
             new THREE.CubeTextureLoader()
                 .setPath('textures/house/')
                 .load(['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'], function (textureCube) {
