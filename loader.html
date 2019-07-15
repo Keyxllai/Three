@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8>
+    <title>hree.js loader</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="js/three.js"></script>
+    <script src="js/TrackballControls.js"></script>
+    <script src="js/stats.min.js"></script>
+    <script src="js/TDSLoader.js"></script>
+    <script>
+        var statsEnabled = true;
+        var container, stats;
+
+        var renderer, scene, camera, controls;
+
+        init();
+
+        animate();
+
+        function init() {
+            container = document.createElement('div');
+            document.body.appendChild(container);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 2;
+            // camera.position.set(100, 10, 15);
+            // camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+            //轨迹球控件，最常用的控件，可以使用鼠标轻松的移动、平移，缩放场景。
+            controls = new THREE.TrackballControls(camera, renderer.domElement);
+
+
+            scene.add(new THREE.HemisphereLight());
+
+
+            //
+
+            var loader = new THREE.TextureLoader();
+            var normal = loader.load('models/3ds/Aparat/D300_0009.jpg');
+
+            var loader = new THREE.TDSLoader();
+            loader.setResourcePath('models/3ds/Aparat/');
+            loader.load('models/3ds/Aparat/ca.3ds', function (object) {
+                object.traverse(function (child) {
+                    if (child instanceof THREE.Mesh) {
+                        child.material.normalMap = normal;
+                    }
+                });
+                scene.add(object);
+            });
+
+            // 
+            if (statsEnabled) {
+                stats = new Stats();
+                container.appendChild(stats.dom);
+            }
+
+            renderer.setClearColor( 0xdddddd, 1);   //设置背景色为grey
+
+            /* 监听事件 */
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        /* 窗口变动触发 */
+        function onWindowResize() {
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        /* 循环渲染 */
+        function animate() {
+
+            requestAnimationFrame(animate);
+
+            controls.update();
+            renderer.render(scene, camera);
+
+            if (statsEnabled) stats.update();
+
+        }
+    </script>
+</body>
+
+</html>
