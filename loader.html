@@ -58,8 +58,10 @@
             var loader = new THREE.TDSLoader();
             loader.setResourcePath('models/3ds/Aparat/');
             loader.load('models/3ds/Aparat/ca.3ds', function (object) {
+                debugger;
                 object.traverse(function (child) {
                     if (child instanceof THREE.Mesh) {
+                        child.material.side = THREE.DoubleSide;
                         child.material.normalMap = normal;
                     }
                 });
@@ -72,7 +74,7 @@
                 container.appendChild(stats.dom);
             }
 
-            renderer.setClearColor( 0xdddddd, 1);   //设置背景色为grey
+            renderer.setClearColor(0xdddddd, 1);   //设置背景色为grey
 
             /* 监听事件 */
             window.addEventListener('resize', onWindowResize, false);
